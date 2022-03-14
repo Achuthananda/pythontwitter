@@ -1,22 +1,34 @@
 # https://realpython.com/twitter-bot-python-tweepy/
 import re,os
 import tweepy,twitter
-from tweepy import OAuthHandler
+from tweepy import OAuthHandler,API,Stream
 from configparser import ConfigParser
 import time
 import random
 import os
+import sys
 
 
-consumer_key='Hoa40a##***leY40wwyro4ZasdsadtVnNgB6e'
-consumer_secret='FV60K4as##*****duyUWL1cadsasdJEesgF9NjnoV85fKYrDKsyNRfPqg4W8AfIBsh'
-access_token_key='16279203aas5-EcjG$$$$$$**6WZDQSIg13nuEM1SsSKasIV3vWK2Rv0FHM7PU9'
-access_token_secret='24Zt05jhadsadoCE###***VNupN826pqCvBWh7a11fcukTmGjGztRAVJ'
+
+class MyListener(tweepy.Stream):
+    def on_status(self, status):
+        print(status.text)
+        print('*'*80)
+        
+    def on_error(self, status):
+        print(status)
+        return True
+
+
+consumer_key='Eg3VhBh1NM0j$$$$ugs6baReWBhcBxyz'
+consumer_secret='ZtSbqdSSqhu^^gS80Oy0OXGAIWmCP75DlrX5s57LxyzrX88qtwg1ghexyz'
+access_token_key='1237004240997892skjsdkasd098-H2jqYueh1ReEL8UH5xyzz8ltYgUjXKkf5J'
+access_token_secret='2EGdt***yl3YYf9jkk0bUPAszy23chMXXV149pQXjdxK6npTPlWR1'
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token_key, access_token_secret)
 
-api = tweepy.API(auth, wait_on_rate_limit=True,wait_on_rate_limit_notify=True)
+api = tweepy.API(auth)
 twitterapi = twitter.Api(consumer_key=consumer_key,consumer_secret=consumer_secret,
                   access_token_key=access_token_key,access_token_secret=access_token_secret)
 
@@ -84,6 +96,15 @@ def tweetText():
         status = api.PostUpdate(message)
     except Exception as e:
         print(e)
+
+
+def getStream(topicArray):
+    twitter_stream = MyListener(consumer_key,consumer_secret,access_token_key, access_token_secret)
+    twitter_stream.filter(track=topicArray)
+
+
+topics = ['PuneetRajkumar','Modi','Virat']
+getStream(topics)
 
 '''
 getAllTweets()
